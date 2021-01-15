@@ -1,13 +1,11 @@
 import json
 import base64
 from datetime import datetime
+from traceback import format_exc
 import pywemo
 import cv2
 
-
-class thing:
-    def state(self):
-        return {"TIMESTAMP": datetime.utcnow().isoformat()}
+from groundplane.things.thing import thing
 
 
 def get_wemo_devices(force_scan=False):
@@ -31,8 +29,18 @@ class wemo(thing):
 
 
 class wemo_plug(wemo):
+    def state(self):
+        return {"state": self.wemo.get_state() == 1,
+                "TIMESTAMP": datetime.utcnow().isoformat()}
+
+    def request_state(self, requested_state):
+        on_state = int(requested_state.get("state", None))
+        assert on_state in [1, 0]
+        self.wemo.set_state(on_state)
+        return True
+
     def toggle(self):
-        pass
+        self.wemo.toggle()
 
 
 class wemo_insight(wemo_plug):
@@ -41,42 +49,8 @@ class wemo_insight(wemo_plug):
         return self.wemo.insight_params
     
     def state(self):
-        return {**self.get_insight_params(),
+        insight_params = self.get_insight_params()
+        insight_params['lastchange'] = insight_params['lastchange'].isoformat()
+        return {**insight_params,
                 "TIMESTAMP": datetime.utcnow().isoformat()}
-
-
-class camera(thing):
-    def __init__(self, DEVICE_NUMBER):
-        self.device_number = DEVICE_NUMBER
-
-    def state(self):
-        return {"IMAGE": "not implemented",  # self.capture_camera(self.device_number),
-                "TIMESTAMP": datetime.utcnow().isoformat()}
-
-    @staticmethod
-    def capture_camera(cam_num):
-        cam = cv2.VideoCapture(cam_num)
-        retval, image = cam.read()
-        cam.release()
-        retval, buff = cv2.imencode('.jpg', image)
-        b64jpg = base64.b64encode(buff)
-        return b64jpg
-
-
-class gpio(thing):
-    def __init__(self, PIN):
-        self.pin = PIN
-
-    @staticmethod
-    def toggle(pin_number):
-        pass
-
-
-class latch(gpio):
-    def open(self):
-        pass
-
-
-class mag_sensor(gpio):
-    pass
 

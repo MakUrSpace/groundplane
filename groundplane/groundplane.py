@@ -7,6 +7,17 @@ from groundplane.things import thing_types
 
 
 class groundplane(Murd):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        for thing in self.things:
+            row = thing.pop('ROW')
+            thing_name = thing.pop('COL')
+            thing_type = thing.pop('TYPE')
+            try:
+                setattr(self, thing_name, thing_types[thing_type](**thing))
+            except:
+                from IPython import embed; embed()
+
     @staticmethod
     def break_new_ground():
         gpid = str(uuid4())
@@ -25,6 +36,7 @@ class groundplane(Murd):
         ]
         gp = groundplane()
         gp.update(mems)
+        gp = groundplane(murd=gp.murd)
         return gp
 
     @property
@@ -35,9 +47,15 @@ class groundplane(Murd):
         state = {"START_TIMESTAMP": datetime.utcnow().isoformat()}
         for thing in self.things:
             row = thing.pop('ROW')
-            col = thing.pop('COL')
+            thing_name = thing.pop('COL')
             thing_type = thing.pop('TYPE')
-            state[col] = thing_types[thing_type](**thing).state()
+            state[thing_name] = getattr(self, thing_name).state() 
         state["END_TIMESTAMP"] = datetime.utcnow().isoformat()
         return state
-
+    
+    def request_state(self, requested_state):
+        for thing in self.things:
+            thing_name = thing.pop('COL')
+            if thing_name in requested_state:
+                getattr(self, thing_name).request_state(requested_state.pop(thing_name))
+        return True
