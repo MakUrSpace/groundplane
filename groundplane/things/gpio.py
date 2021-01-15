@@ -21,15 +21,20 @@ class out_pin(gpio):
         super().__init__()
 
 
-class level_sensor(gpio):
-    pass
-
-
 class latch(gpio):
     def open(self):
         pass
 
 
-class mag_sensor(gpio):
+class in_pin(gpio):
+    def __init__(self, PIN):
+        super().__init__(PIN=PIN)
+
+
+class level_sensor(in_pin):
+    pass
+
+
+class mag_sensor(level_sensor):
     pass
 

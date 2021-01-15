@@ -2,21 +2,31 @@ import json
 from datetime import datetime
 from uuid import uuid4
 
-from murd import Murd
+from murd import Murd, MurdMemory
 from groundplane.things import thing_types
+
+
+class murdt(MurdMemory):
+    @property
+    def thing_name(self):
+        return self['COL']
+    
+    @property
+    def thing_type(self):
+        return thing_types[self['TYPE']]
+
+    @property
+    def attributes(self):
+        return {key: value for key, value in self.items()
+                if key not in ['ROW', 'COL', 'TYPE']}
 
 
 class groundplane(Murd):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         for thing in self.things:
-            row = thing.pop('ROW')
-            thing_name = thing.pop('COL')
-            thing_type = thing.pop('TYPE')
-            try:
-                setattr(self, thing_name, thing_types[thing_type](**thing))
-            except:
-                from IPython import embed; embed()
+            setattr(self, thing.thing_name,
+                    thing.thing_type(**thing.attributes))
 
     @staticmethod
     def break_new_ground():
@@ -41,7 +51,8 @@ class groundplane(Murd):
 
     @property
     def things(self):
-        return self.read(row="THING")
+        for thing in self.read(row="THING"):
+            yield murdt(**thing)
 
     def state(self):
         state = {"START_TIMESTAMP": datetime.utcnow().isoformat()}
@@ -51,11 +62,11 @@ class groundplane(Murd):
             thing_type = thing.pop('TYPE')
             state[thing_name] = getattr(self, thing_name).state() 
         state["END_TIMESTAMP"] = datetime.utcnow().isoformat()
+        state["TIMESTAMP"] = state["END_TIMESTAMP"]
         return state
     
     def request_state(self, requested_state):
         for thing in self.things:
-            thing_name = thing.pop('COL')
-            if thing_name in requested_state:
-                getattr(self, thing_name).request_state(requested_state.pop(thing_name))
+            if thing.thing_name in requested_state:
+                getattr(self, thing.thing_name).request_state(requested_state.pop(thing.thing_name))
         return True

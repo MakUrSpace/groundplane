@@ -5,7 +5,7 @@ from traceback import format_exc
 import pywemo
 import cv2
 
-from groundplane.things.thing import thing
+from groundplane.things import thing
 
 
 def get_wemo_devices(force_scan=False):
