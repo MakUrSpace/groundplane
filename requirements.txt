@@ -1,2 +1,4 @@
+murd
 pywemo
+opencv-python
 gpiozero

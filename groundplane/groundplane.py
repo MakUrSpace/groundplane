@@ -33,20 +33,9 @@ class groundplane(Murd):
         gpid = str(uuid4())
         mems = [
             {"ROW": "GPID", "COL": gpid},
-            {"ROW": "THING", "COL": "top_fdm", "TYPE": "wemo_insight", "DEVICE_NAME": "TopModFdm"},
-            {"ROW": "THING", "COL": "bot_fdm", "TYPE": "wemo_plug", "DEVICE_NAME": "Nooxlay"},
-            {"ROW": "THING", "COL": "latch_top", "TYPE": "latch", "PIN": 1},
-            {"ROW": "THING", "COL": "latch_bot", "TYPE": "latch", "PIN": 2},
-            {"ROW": "THING", "COL": "latch_cab", "TYPE": "latch", "PIN": 3},
-            {"ROW": "THING", "COL": "ms_top", "TYPE": "mag_sensor", "PIN": 4},
-            {"ROW": "THING", "COL": "ms_bot", "TYPE": "mag_sensor", "PIN": 5},
-            {"ROW": "THING", "COL": "ms_cab", "TYPE": "mag_sensor", "PIN": 6},
-            *[{"ROW": "THING", "COL": f"camera_{cam}", "TYPE": "camera", "DEVICE_NUMBER": cam}
-              for cam in range(0, 16, 2)],
         ]
-        gp = groundplane()
-        gp.update(mems)
-        gp = groundplane(murd=gp.murd)
+        murd = json.dumps(murdt.prime_mems(mems))
+        gp = groundplane(murd=murd)
         return gp
 
     @property

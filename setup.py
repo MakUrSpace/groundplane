@@ -13,7 +13,7 @@ setup(
     long_description_content_type='text/markdown',
     url='https://www.makurspace.com',
     packages=["groundplane"],
-    install_requires=["requests", "pywemo", "murd"],
+    install_requires=["murd", "pywemo", "opencv-python", "gpiozero"],
     classifiers=(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
