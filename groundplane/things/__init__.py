@@ -1,5 +1,5 @@
 from .thing import thing
-from .gpio import level_sensor, latch
+from .gpio import latch, mag_sensor
 from .camera import camera
 from .wemo import wemo_plug, wemo_insight
 
