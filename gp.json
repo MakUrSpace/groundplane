@@ -1,0 +1,102 @@
+{
+    "GPID|||||cf82d4ff-e2ae-497d-93ce-e7c1c842bf5c": {
+        "ROW": "GPID",
+        "COL": "cf82d4ff-e2ae-497d-93ce-e7c1c842bf5c"
+    },
+    "THING|||||top_fdm": {
+        "ROW": "THING",
+        "COL": "top_fdm",
+        "TYPE": "wemo_insight",
+        "DEVICE_NAME": "TopModFdm"
+    },
+    "THING|||||bot_fdm": {
+        "ROW": "THING",
+        "COL": "bot_fdm",
+        "TYPE": "wemo_plug",
+        "DEVICE_NAME": "Nooxlay"
+    },
+    "THING|||||latch_top": {
+        "ROW": "THING",
+        "COL": "latch_top",
+        "TYPE": "latch",
+        "PIN": 4
+    },
+    "THING|||||latch_bot": {
+        "ROW": "THING",
+        "COL": "latch_bot",
+        "TYPE": "latch",
+        "PIN": 17
+    },
+    "THING|||||latch_cab": {
+        "ROW": "THING",
+        "COL": "latch_cab",
+        "TYPE": "latch",
+        "PIN": 18
+    },
+    "THING|||||ms_top": {
+        "ROW": "THING",
+        "COL": "ms_top",
+        "TYPE": "mag_sensor",
+        "PIN": 27
+    },
+    "THING|||||ms_bot": {
+        "ROW": "THING",
+        "COL": "ms_bot",
+        "TYPE": "mag_sensor",
+        "PIN": 22
+    },
+    "THING|||||ms_cab": {
+        "ROW": "THING",
+        "COL": "ms_cab",
+        "TYPE": "mag_sensor",
+        "PIN": 23
+    },
+    "THING|||||camera_0": {
+        "ROW": "THING",
+        "COL": "camera_0",
+        "TYPE": "camera",
+        "DEVICE_NUMBER": 0
+    },
+    "THING|||||camera_2": {
+        "ROW": "THING",
+        "COL": "camera_2",
+        "TYPE": "camera",
+        "DEVICE_NUMBER": 2
+    },
+    "THING|||||camera_4": {
+        "ROW": "THING",
+        "COL": "camera_4",
+        "TYPE": "camera",
+        "DEVICE_NUMBER": 4
+    },
+    "THING|||||camera_6": {
+        "ROW": "THING",
+        "COL": "camera_6",
+        "TYPE": "camera",
+        "DEVICE_NUMBER": 6
+    },
+    "THING|||||camera_8": {
+        "ROW": "THING",
+        "COL": "camera_8",
+        "TYPE": "camera",
+        "DEVICE_NUMBER": 8
+    },
+    "THING|||||camera_10": {
+        "ROW": "THING",
+        "COL": "camera_10",
+        "TYPE": "camera",
+        "DEVICE_NUMBER": 10
+    },
+    "THING|||||camera_12": {
+        "ROW": "THING",
+        "COL": "camera_12",
+        "TYPE": "camera",
+        "DEVICE_NUMBER": 12
+    },
+    "THING|||||camera_14": {
+        "ROW": "THING",
+        "COL": "camera_14",
+        "TYPE": "camera",
+        "DEVICE_NUMBER": 14
+    }
+}
