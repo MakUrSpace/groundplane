@@ -22,12 +22,18 @@ class Murdt(Murdi):
                 if key not in [Murdi.region_key, Murdi.sort_key, 'TYPE']}
 
 
+def indenture(func):
+    def inner(self, *args, **kwargs):
+        return func(*args, **kwargs)
+    return inner
+
+
 class groundplane:
     def __init__(self, murd_file=None):
         if murd_file is not None:
             murd.open_murd(murd_file)
-            self.gpid = murd.read_first(REGION="IDENTIFIER")["GPID"]
-            self.name = murd.read_first(REGION="NAME")["NAME"]
+            self.gpid = murd.read_first(region="IDENTIFIER")["GPID"]
+            self.name = murd.read_first(region="NAME")["NAME"]
         else:
             self.gpid = str(uuid4())
             murd.update([
@@ -43,15 +49,16 @@ class groundplane:
         for thing in murd.read(region="THING"):
             yield Murdt(**thing)
 
+    def add_thing(self, thing):
+        murd.update([thing.get_definition()])
+        setattr(self, thing.thing_name, thing)
+
     def state(self):
         state = {"START_TIMESTAMP": datetime.utcnow().isoformat()}
         for thing in self.things:
-            thing.pop(Murdt.region_key)
-            thing.pop('TYPE')
             thing_name = thing.pop(Murdt.sort_key)
             state[thing_name] = getattr(self, thing_name).state()
-        state["END_TIMESTAMP"] = datetime.utcnow().isoformat()
-        state["TIMESTAMP"] = state["END_TIMESTAMP"]
+        state["TIMESTAMP"] = datetime.utcnow().isoformat()
         return state
 
     def request_state(self, requested_state):
@@ -60,3 +67,9 @@ class groundplane:
                 getattr(self,
                         thing.thing_name).request_state(requested_state.pop(thing.thing_name))
         return True
+
+    update = indenture(murd.update)
+    read = indenture(murd.read)
+    delete = indenture(murd.delete)
+    write_to_file = indenture(murd.write_murd)
+    read_groundplane_file = indenture(murd.open_murd)

@@ -8,8 +8,9 @@ from groundplane.things import thing
 
 
 class camera(thing):
-    def __init__(self, DEVICE_NUMBER):
-        self.device_number = DEVICE_NUMBER
+    def __init__(self, SORT, DEVICE_TYPE, DEVICE_NUMBER):
+        super().__init__(SORT, DEVICE_TYPE)
+        self.DEVICE_NUMBER = DEVICE_NUMBER
         self.cfg = {}
 
     def state(self):

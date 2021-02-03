@@ -14,9 +14,9 @@ get_wemo_devices.devices = []
 
 
 class wemo(thing):
-    def __init__(self, SORT, DEVICE_NAME):
-        self.SORT = SORT
-        self.device_name = DEVICE_NAME
+    def __init__(self, SORT, DEVICE_TYPE, DEVICE_NAME):
+        super().__init__(SORT, DEVICE_TYPE)
+        self.DEVICE_NAME = DEVICE_NAME
         self.wemo = self.get_device(DEVICE_NAME)
 
     @staticmethod

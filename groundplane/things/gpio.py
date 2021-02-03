@@ -4,8 +4,8 @@ from groundplane.things import thing
 
 
 class gpio(thing):
-    def __init__(self, SORT, PIN):
-        self.SORT = SORT
+    def __init__(self, SORT, DEVICE_TYPE, PIN):
+        super().__init__(SORT, DEVICE_TYPE)
         self.PIN = PIN
         self.gpo = None
 
@@ -16,8 +16,8 @@ class gpio(thing):
 
 
 class out_pin(gpio):
-    def __init__(self, SORT, PIN):
-        super().__init__(SORT, PIN)
+    def __init__(self, SORT, DEVICE_TYPE, PIN):
+        super().__init__(SORT, DEVICE_TYPE, PIN)
         self.gpo = gpiozero.DigitalOutputDevice()
 
     def request_state(self, requested_state):
@@ -52,8 +52,8 @@ class latch(out_pin):
 
 
 class in_pin(gpio):
-    def __init__(self, SORT, PIN):
-        super().__init__(SORT, PIN)
+    def __init__(self, SORT, DEVICE_TYPE, PIN):
+        super().__init__(SORT, DEVICE_TYPE, PIN)
         self.gpo = gpiozero.DigitalInputDevice()
 
     def request_state(self, requested_state):

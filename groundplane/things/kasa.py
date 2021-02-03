@@ -15,13 +15,13 @@ get_kasa_devices.devices = []
 
 
 class kasa_device(thing):
-    def __init__(self, SORT, DEVICE_TYPE, DEVICE_ADDRESS):
-        self.SORT = SORT
+    def __init__(self, SORT, DEVICE_TYPE, DEVICE_ADDRESS, KASA_CLASS):
+        super().__init__(SORT, DEVICE_TYPE)
         self.DEVICE_ADDRESS = DEVICE_ADDRESS
-        assert DEVICE_TYPE in [c.__name__ for c in kasa.SmartDevice.__subclasses__()]
-        self.DEVICE_TYPE = DEVICE_TYPE
-        dtype = getattr(kasa, DEVICE_TYPE)
-        self.kasa = dtype(DEVICE_ADDRESS)
+        assert KASA_CLASS in [c.__name__ for c in kasa.SmartDevice.__subclasses__()]
+        self.KASA_CLASS = KASA_CLASS
+        kasa_class = getattr(kasa, KASA_CLASS)
+        self.kasa = kasa_class(DEVICE_ADDRESS)
         self.update()
         self.child_map = {c.alias: c for c in self.kasa.children}
 
