@@ -1,4 +1,3 @@
-import json
 from datetime import datetime
 from uuid import uuid4
 
@@ -31,9 +30,9 @@ class groundplane:
             self.name = murd.read_first(REGION="NAME")["NAME"]
         else:
             self.gpid = str(uuid4())
-            murd.__murd = json.dumps(Murdi.ze([
+            murd.update([
                 {"REGION": "NAME", "SORT": "groundplane", "NAME": f"groundplane_{self.gpid}"},
-                {"REGION": "IDENTIFIER", "GPID": self.gpid}]))
+                {"REGION": "IDENTIFIER", "GPID": self.gpid}])
 
         for thing in self.things:
             setattr(self, thing.thing_name,

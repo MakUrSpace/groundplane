@@ -15,10 +15,11 @@ get_kasa_devices.devices = []
 
 
 class kasa_device(thing):
-    def __init__(self, DEVICE_TYPE, DEVICE_ADDRESS):
-        self.device_address = DEVICE_ADDRESS
+    def __init__(self, SORT, DEVICE_TYPE, DEVICE_ADDRESS):
+        self.SORT = SORT
+        self.DEVICE_ADDRESS = DEVICE_ADDRESS
         assert DEVICE_TYPE in [c.__name__ for c in kasa.SmartDevice.__subclasses__()]
-        self.device_type = DEVICE_TYPE
+        self.DEVICE_TYPE = DEVICE_TYPE
         dtype = getattr(kasa, DEVICE_TYPE)
         self.kasa = dtype(DEVICE_ADDRESS)
         self.update()

@@ -4,11 +4,9 @@ from groundplane.things import thing
 
 
 class gpio(thing):
-    def __init__(self, **kwargs):
-        kwargs = {key.lower(): value for key, value in kwargs.items()}
-        if 'pin' not in kwargs:
-            raise Exception("GPIO pin definition required")
-        self.kwargs = kwargs
+    def __init__(self, SORT, PIN):
+        self.SORT = SORT
+        self.PIN = PIN
         self.gpo = None
 
     def state(self):
@@ -16,15 +14,11 @@ class gpio(thing):
         state['state'] = self.gpo.value
         return state
 
-    @property
-    def pin(self):
-        return self.kwargs['pin']
-
 
 class out_pin(gpio):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.gpo = gpiozero.DigitalOutputDevice(**self.kwargs)
+    def __init__(self, SORT, PIN):
+        super().__init__(SORT, PIN)
+        self.gpo = gpiozero.DigitalOutputDevice()
 
     def request_state(self, requested_state):
         on_state = int(requested_state.get("state", None))
@@ -58,9 +52,9 @@ class latch(out_pin):
 
 
 class in_pin(gpio):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.gpo = gpiozero.DigitalInputDevice(**self.kwargs)
+    def __init__(self, SORT, PIN):
+        super().__init__(SORT, PIN)
+        self.gpo = gpiozero.DigitalInputDevice()
 
     def request_state(self, requested_state):
         return True
