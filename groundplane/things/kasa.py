@@ -1,9 +1,5 @@
-import json
-import base64
 from datetime import datetime
-from traceback import format_exc
 import kasa
-import cv2
 import asyncio
 
 from groundplane.things import thing
@@ -13,6 +9,8 @@ def get_kasa_devices(force_scan=False):
     if not get_kasa_devices.devices or force_scan:
         get_kasa_devices.devices = asyncio.run(kasa.Discover.discover())
     return get_kasa_devices.devices
+
+
 get_kasa_devices.devices = []
 
 
@@ -32,7 +30,7 @@ class kasa_device(thing):
             if device.alias == device_name:
                 return device
         raise Exception(f"Device {device_name} not found")
-    
+
     def update(self):
         asyncio.run(self.kasa.update())
 
@@ -49,8 +47,8 @@ class kasa_strip(kasa_device):
             cdevice = self.child_map[child]
             method = 'turn_on' if bool(state) else 'turn_off'
             state_requests.append(getattr(cdevice, method)())
+
         async def request_children():
             await asyncio.gather(*state_requests)
         asyncio.run(request_children())
         return True
-

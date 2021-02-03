@@ -15,7 +15,7 @@ class camera(thing):
     def state(self):
         try:
             img = self.capture_camera(int(self.device_number)).decode()
-        except:
+        except Exception:
             img = f"ERROR: Failed to capture image: {format_exc()}"
         return {"IMAGE": img, "CFG": self.cfg, "TIMESTAMP": datetime.utcnow().isoformat()}
 
@@ -32,4 +32,3 @@ class camera(thing):
         retval, buff = cv2.imencode('.jpg', image)
         b64jpg = base64.b64encode(buff)
         return b64jpg
-

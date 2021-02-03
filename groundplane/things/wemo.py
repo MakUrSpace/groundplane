@@ -1,9 +1,5 @@
-import json
-import base64
 from datetime import datetime
-from traceback import format_exc
 import pywemo
-import cv2
 
 from groundplane.things import thing
 
@@ -12,6 +8,8 @@ def get_wemo_devices(force_scan=False):
     if not get_wemo_devices.devices or force_scan:
         get_wemo_devices.devices = pywemo.discover_devices()
     return get_wemo_devices.devices
+
+
 get_wemo_devices.devices = []
 
 
@@ -47,10 +45,9 @@ class wemo_insight(wemo_plug):
     def get_insight_params(self):
         self.wemo.update_insight_params()
         return self.wemo.insight_params
-    
+
     def state(self):
         insight_params = self.get_insight_params()
         insight_params['lastchange'] = insight_params['lastchange'].isoformat()
         return {**insight_params,
                 "TIMESTAMP": datetime.utcnow().isoformat()}
-

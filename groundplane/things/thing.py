@@ -1,4 +1,3 @@
-import json
 from datetime import datetime
 
 
@@ -8,4 +7,3 @@ class thing:
 
     def request_state(self, requested_state):
         return True
-

@@ -1,12 +1,4 @@
 """ Control code for anything connected to the GPIO bus """
-import json
-import base64
-from datetime import datetime
-from traceback import format_exc
-import pywemo
-import cv2
-
-
 import gpiozero
 from groundplane.things import thing
 
@@ -48,7 +40,7 @@ class latch(out_pin):
     @property
     def closed(self):
         return self.gpo.value == 0
-    
+
     def open(self):
         return super().request_state({"state": 1})
 
@@ -63,7 +55,7 @@ class latch(out_pin):
     def request_state(self, requested_state):
         state = requested_state.get("state", "extended")
         return super().request_state({"state": 0 if state == "extended" else 1})
-        
+
 
 class in_pin(gpio):
     def __init__(self, **kwargs):
@@ -71,9 +63,8 @@ class in_pin(gpio):
         self.gpo = gpiozero.DigitalInputDevice(**self.kwargs)
 
     def request_state(self, requested_state):
-       return True 
+        return True
 
 
 class mag_sensor(in_pin):
     pass
-
