@@ -41,8 +41,9 @@ class groundplane:
                 {"REGION": "IDENTIFIER", "GPID": self.gpid}])
 
         for thing in self.things:
+            thing.pop('REGION')
             setattr(self, thing.thing_name,
-                    thing.thing_type(**thing.attributes))
+                    thing.thing_type(**thing))
 
     @property
     def things(self):

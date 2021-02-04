@@ -37,6 +37,9 @@ class kasa_device(thing):
 
 
 class kasa_strip(kasa_device):
+    def __init__(self, SORT, DEVICE_TYPE, DEVICE_ADDRESS):
+        super().__init__(SORT, DEVICE_TYPE, DEVICE_ADDRESS, KASA_CLASS="SmartStrip")
+
     def state(self):
         return {"state": {c.alias: c.is_on for c in self.kasa.children},
                 "TIMESTAMP": datetime.utcnow().isoformat()}

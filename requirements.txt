@@ -1,4 +1,5 @@
 murd
 pywemo
+python-kasa
 opencv-python
 gpiozero

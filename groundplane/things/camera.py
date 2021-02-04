@@ -15,7 +15,7 @@ class camera(thing):
 
     def state(self):
         try:
-            img = self.capture_camera(int(self.device_number)).decode()
+            img = self.capture_camera(int(self.DEVICE_NUMBER)).decode()
         except Exception:
             img = f"ERROR: Failed to capture image: {format_exc()}"
         return {"IMAGE": img, "CFG": self.cfg, "TIMESTAMP": datetime.utcnow().isoformat()}
