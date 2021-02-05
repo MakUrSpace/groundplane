@@ -3,6 +3,7 @@ from uuid import uuid4
 
 import murd
 from murd import Murdi
+import murd_ddb
 
 from groundplane.things import thing_types
 
@@ -61,6 +62,10 @@ class groundplane:
             state[thing_name] = getattr(self, thing_name).state()
         state["TIMESTAMP"] = datetime.utcnow().isoformat()
         return state
+
+    def upload_state(self):
+        state = self.state()
+        murd_ddb.update([{"REGION": self.gpid, "SORT": state['TIMESTAMP'], **state}])
 
     def request_state(self, requested_state):
         for thing in self.things:
