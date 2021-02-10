@@ -1,101 +1,24 @@
 {
     "NAME|||||groundplane": {
-        "REGION": "NAME",
+        "GROUP": "NAME",
         "SORT": "groundplane",
-        "NAME": "groundplane_cf82d4ff-e2ae-497d-93ce-e7c1c842bf5c"
+        "NAME": "groundplane_1a825125-84e1-4ad4-915a-611a8b73594f"
     },
-    "GPID|||||cf82d4ff-e2ae-497d-93ce-e7c1c842bf5c": {
-        "REGION": "GPID",
-        "SORT": "cf82d4ff-e2ae-497d-93ce-e7c1c842bf5c"
+    "IDENTIFIER|||||_": {
+        "GROUP": "IDENTIFIER",
+        "SORT": "_",
+        "GPID": "1a825125-84e1-4ad4-915a-611a8b73594f"
     },
     "THING|||||power": {
-        "REGION": "THING",
+        "GROUP": "THING",
         "SORT": "power",
         "DEVICE_TYPE": "kasa_strip",
         "DEVICE_ADDRESS": "192.168.2.210"
     },
-    "THING|||||latch_top": {
-        "REGION": "THING",
-        "SORT": "latch_top",
-        "TYPE": "latch",
-        "PIN": 4
-    },
-    "THING|||||latch_bot": {
-        "REGION": "THING",
-        "SORT": "latch_bot",
-        "TYPE": "latch",
-        "PIN": 17
-    },
-    "THING|||||latch_cab": {
-        "REGION": "THING",
-        "SORT": "latch_cab",
-        "TYPE": "latch",
-        "PIN": 18
-    },
-    "THING|||||ms_top": {
-        "REGION": "THING",
-        "SORT": "ms_top",
-        "TYPE": "mag_sensor",
-        "PIN": 27
-    },
-    "THING|||||ms_bot": {
-        "REGION": "THING",
-        "SORT": "ms_bot",
-        "TYPE": "mag_sensor",
-        "PIN": 22
-    },
-    "THING|||||ms_cab": {
-        "REGION": "THING",
-        "SORT": "ms_cab",
-        "TYPE": "mag_sensor",
-        "PIN": 23
-    },
-    "THING|||||camera_0": {
-        "REGION": "THING",
-        "SORT": "camera_0",
-        "TYPE": "camera",
-        "DEVICE_NUMBER": 0
-    },
-    "THING|||||camera_2": {
-        "REGION": "THING",
-        "SORT": "camera_2",
-        "TYPE": "camera",
-        "DEVICE_NUMBER": 2
-    },
-    "THING|||||camera_4": {
-        "REGION": "THING",
-        "SORT": "camera_4",
-        "TYPE": "camera",
-        "DEVICE_NUMBER": 4
-    },
-    "THING|||||camera_6": {
-        "REGION": "THING",
-        "SORT": "camera_6",
-        "TYPE": "camera",
-        "DEVICE_NUMBER": 6
-    },
-    "THING|||||camera_8": {
-        "REGION": "THING",
-        "SORT": "camera_8",
-        "TYPE": "camera",
-        "DEVICE_NUMBER": 8
-    },
-    "THING|||||camera_10": {
-        "REGION": "THING",
-        "SORT": "camera_10",
-        "TYPE": "camera",
-        "DEVICE_NUMBER": 10
-    },
-    "THING|||||camera_12": {
-        "REGION": "THING",
-        "SORT": "camera_12",
-        "TYPE": "camera",
-        "DEVICE_NUMBER": 12
-    },
-    "THING|||||camera_14": {
-        "REGION": "THING",
-        "SORT": "camera_14",
-        "TYPE": "camera",
-        "DEVICE_NUMBER": 14
+    "THING|||||cams": {
+        "GROUP": "THING",
+        "SORT": "cams",
+        "DEVICE_TYPE": "dyn_camera",
+        "NUM_CAMERA": 2
     }
 }

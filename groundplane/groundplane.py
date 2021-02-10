@@ -2,25 +2,10 @@ from datetime import datetime
 from uuid import uuid4
 
 import murd
-from murd import Murdi
-import murd_ddb
+from murd import Murd
+from murdaws import DDBMurd
 
 from groundplane.things import thing_types
-
-
-class Murdt(Murdi):
-    @property
-    def thing_name(self):
-        return self['SORT']
-
-    @property
-    def thing_type(self):
-        return thing_types[self['DEVICE_TYPE']]
-
-    @property
-    def attributes(self):
-        return {key: value for key, value in self.items()
-                if key not in [Murdi.region_key, Murdi.sort_key, 'TYPE']}
 
 
 def indenture(func):
@@ -29,43 +14,63 @@ def indenture(func):
     return inner
 
 
-class groundplane:
+class groundplane(Murd):
+    class M(dict):
+        def __init__(self, **kwargs):
+            kwargs = {"GROUP": "MISC", "SORT": "_", **kwargs}
+            self.update(kwargs)
+
+        @property
+        def thing_name(self):
+            return self['SORT']
+
+        @property
+        def thing_type(self):
+            return thing_types[self['DEVICE_TYPE']]
+
+        @property
+        def attributes(self):
+            return {key: value for key, value in self.items()
+                    if key not in ['GROUP', 'SORT', 'TYPE']}
+
+
     def __init__(self, murd_file=None):
+        super().__init__(murd_file)
+        self.ddbmurd = DDBMurd("hyperspace")
         if murd_file is not None:
-            murd.open_murd(murd_file)
-            self.gpid = murd.read_first(region="IDENTIFIER")["GPID"]
-            self.name = murd.read_first(region="NAME")["NAME"]
+            self.gpid = self.read_first(group="IDENTIFIER")["GPID"]
+            self.name = self.read_first(group="NAME")["NAME"]
         else:
             self.gpid = str(uuid4())
-            murd.update([
-                {"REGION": "NAME", "SORT": "groundplane", "NAME": f"groundplane_{self.gpid}"},
-                {"REGION": "IDENTIFIER", "GPID": self.gpid}])
+            self.update([
+                {"GROUP": "NAME", "SORT": "groundplane", "NAME": f"groundplane_{self.gpid}"},
+                {"GROUP": "IDENTIFIER", "GPID": self.gpid}])
 
         for thing in self.things:
-            thing.pop('REGION')
+            thing.pop('GROUP')
             setattr(self, thing.thing_name,
                     thing.thing_type(**thing))
 
     @property
     def things(self):
-        for thing in murd.read(region="THING"):
-            yield Murdt(**thing)
+        for thing in self.read(group="THING"):
+            yield self.M(**thing)
 
     def add_thing(self, thing):
-        murd.update([thing.get_definition()])
+        self.update([thing.get_definition()])
         setattr(self, thing.thing_name, thing)
 
     def state(self):
         state = {"START_TIMESTAMP": datetime.utcnow().isoformat()}
         for thing in self.things:
-            thing_name = thing.pop(Murdt.sort_key)
+            thing_name = thing.pop('SORT')
             state[thing_name] = getattr(self, thing_name).state()
         state["TIMESTAMP"] = datetime.utcnow().isoformat()
         return state
 
-    def upload_state(self):
-        state = self.state()
-        murd_ddb.update([{"REGION": self.gpid, "SORT": state['TIMESTAMP'], **state}])
+    def upload_state(self, state=None):
+        state = self.state() if state is None else state
+        self.ddbmurd.update([{"GROUP": self.gpid, "SORT": state['TIMESTAMP'], **state}])
 
     def request_state(self, requested_state):
         for thing in self.things:
@@ -74,8 +79,6 @@ class groundplane:
                         thing.thing_name).request_state(requested_state.pop(thing.thing_name))
         return True
 
-    update = indenture(murd.update)
-    read = indenture(murd.read)
-    delete = indenture(murd.delete)
-    write_to_file = indenture(murd.write_murd)
-    read_groundplane_file = indenture(murd.open_murd)
+    def write(self, filepath):
+        super().write_murd(filepath)
+

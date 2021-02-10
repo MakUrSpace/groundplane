@@ -16,7 +16,7 @@ class thing:
         return [p for p in signature(cls.__init__).parameters.keys() if p != 'self']
 
     def get_definition(self):
-        return {"REGION": "THING", "SORT": self.SORT,
+        return {"GROUP": "THING", "SORT": self.SORT,
                 **{key: self.__dict__[key] for key in self.get_definition_keys()}}
 
     def state(self):
@@ -24,3 +24,4 @@ class thing:
 
     def request_state(self, requested_state):
         return True
+
