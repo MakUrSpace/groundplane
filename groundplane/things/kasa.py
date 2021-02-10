@@ -45,9 +45,8 @@ class kasa_strip(kasa_device):
                 "TIMESTAMP": datetime.utcnow().isoformat()}
 
     def request_state(self, requested_state):
-        children_states = requested_state.get("state", {})
         state_requests = []
-        for child, state in children_states.items():
+        for child, state in requested_state.items():
             cdevice = self.child_map[child]
             method = 'turn_on' if bool(state) else 'turn_off'
             state_requests.append(getattr(cdevice, method)())
