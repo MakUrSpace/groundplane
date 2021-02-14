@@ -1,4 +1,5 @@
 from datetime import datetime
+from time import sleep
 from uuid import uuid4
 
 import murd
@@ -82,18 +83,25 @@ class groundplane(Murd):
     def write(self, filepath):
         super().write_murd(filepath)
 
-    def loop(self, timeout=30):
+    def loop(self, req_state_timeout=30, heartbeat_timeout=30):
         seconds = 0
         while True:
             sleep(1)
             seconds += 1
             if seconds % req_state_timeout == 0:
+                print("Requesting state")
                 rs = self.ddbmurd.read(
                     group=f"{self.gpid}_requested_state",
                     min_sort=datetime.utcnow() - timedelta(minutes=5))
                 self.request_state(rs)
             if seconds % heartbeat_timeout == 0:
+                print("Heart beating")
                 self.upload_state()
             if seconds > 600:
                 seconds = 0
+
+
+if __name__ == "__main__":
+    gp = groundplane("gp.json")
+    gp.update_state()
 
