@@ -7,7 +7,7 @@ class gpio(thing):
     def __init__(self, SORT, DEVICE_TYPE, PIN):
         super().__init__(SORT, DEVICE_TYPE)
         self.PIN = PIN
-        self.gpo = None
+        self.gpo = None  # Child classes must override self.gpo in their own self.__init__
 
     def state(self):
         state = super().state()
@@ -18,7 +18,9 @@ class gpio(thing):
 class out_pin(gpio):
     def __init__(self, SORT, DEVICE_TYPE, PIN):
         super().__init__(SORT, DEVICE_TYPE, PIN)
-        self.gpo = gpiozero.DigitalOutputDevice()
+        self.gpo = gpiozero.DigitalOutputDevice(
+            pin=self.PIN,
+            initial_value=False)
 
     def request_state(self, requested_state):
         on_state = int(requested_state.get("state", None))
@@ -31,14 +33,17 @@ class out_pin(gpio):
 
 
 class latch(out_pin):
+    def __init__(self, SORT, PIN):
+        super().__init__(SORT=SORT, DEVICE_TYPE="latch", PIN=PIN)
+
     @property
-    def closed(self):
+    def extended(self):
         return self.gpo.value == 0
 
-    def open(self):
+    def retract(self):
         return super().request_state({"state": 1})
 
-    def close(self):
+    def extend(self):
         return super().request_state({"state": 0})
 
     def state(self):
@@ -54,11 +59,23 @@ class latch(out_pin):
 class in_pin(gpio):
     def __init__(self, SORT, DEVICE_TYPE, PIN):
         super().__init__(SORT, DEVICE_TYPE, PIN)
-        self.gpo = gpiozero.DigitalInputDevice()
+        self.gpo = gpiozero.DigitalInputDevice(
+            pin=self.PIN)
 
     def request_state(self, requested_state):
-        return True
+        raise Exception("Input Device cannot accept state request")
 
 
-class mag_sensor(in_pin):
-    pass
+class mag_sensor(gpio):
+    def __init__(self, SORT, PIN):
+        super().__init__(SORT=SORT, DEVICE_TYPE="mag_sensor", PIN=PIN)
+        self.gpo = gpiozero.DigitalInputDevice(
+            pin=self.PIN, pull_up=True)
+
+    def request_state(self, requested_state):
+        raise Exception("Input Device cannot accept state request")
+
+    @property
+    def field_present(self):
+        return self.gpo.value == 1
+
