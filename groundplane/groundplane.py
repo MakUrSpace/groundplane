@@ -9,12 +9,6 @@ from murdaws import DDBMurd
 from groundplane.things import thing_types
 
 
-def indenture(func):
-    def inner(self, *args, **kwargs):
-        return func(*args, **kwargs)
-    return inner
-
-
 class groundplane(Murd):
     class M(dict):
         def __init__(self, **kwargs):
@@ -33,7 +27,6 @@ class groundplane(Murd):
         def attributes(self):
             return {key: value for key, value in self.items()
                     if key not in ['GROUP', 'SORT', 'TYPE']}
-
 
     def __init__(self, murd_file=None):
         super().__init__(murd_file)
