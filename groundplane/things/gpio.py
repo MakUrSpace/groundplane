@@ -33,7 +33,7 @@ class out_pin(gpio):
 
 
 class latch(out_pin):
-    def __init__(self, SORT, PIN):
+    def __init__(self, SORT, DEVICE_TYPE, PIN):
         super().__init__(SORT=SORT, DEVICE_TYPE="latch", PIN=PIN)
 
     @property
@@ -67,7 +67,7 @@ class in_pin(gpio):
 
 
 class mag_sensor(gpio):
-    def __init__(self, SORT, PIN):
+    def __init__(self, SORT, DEVICE_TYPE, PIN):
         super().__init__(SORT=SORT, DEVICE_TYPE="mag_sensor", PIN=PIN)
         self.gpo = gpiozero.DigitalInputDevice(
             pin=self.PIN, pull_up=True)

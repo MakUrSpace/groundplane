@@ -5,43 +5,41 @@ from groundplane.things import thing
 
 
 colors = {
-    "white": Color(255, 255, 255)
-    "blue": Color(0, 0, 255)
-    "green":  Color(0, 255, 0)
-    "red": Color(255, 0, 0)
+    "white": Color(255, 255, 255),
+    "blue": Color(0, 0, 255),
+    "green":  Color(0, 255, 0),
+    "red": Color(255, 0, 0),
     "off": Color(0, 0, 0)
 }
 
 
 def identify_color(color):
     for tcn, test_color in colors.items():
-	if test_color == color:
-	    return tcn
+        if test_color == color:
+            return tcn
     raise Exception(f"Color ({color}) not recognized")
 
 
 class ws2812(thing):
-    def __init__(self, SORT, PIN="GPIO18", LEDS=32, DCOLOR='white'):
-        super().__init__(SORT, DEVICE_TYPE="WS2812", PIN=PIN, LEDS=LEDS, DCOLOR=DCOLOR)
-        assert PIN in ['GPIO18', 'GPIO13']
-	assert identify_color(DCOLOR)
-        LED_FREQ_HZ = 800000
-        LED_DMA = 10
-        LED_BRIGHTNESS = 255
-        LED_INVERT = False
-        LED_CHANNEL = 0
-        self.strip = PixelStrip(LEDS, PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_CHANNEL)
+    def __init__(self, SORT, DEVICE_TYPE, PIN=18, LEDS=32, DCOLOR='white'):
+        super().__init__(SORT, DEVICE_TYPE="WS2812")
+        assert PIN in [18, 13]
+        assert DCOLOR.lower() in colors
+
+        self.DCOLOR = DCOLOR
+        self.PIN = PIN
+
+        self.strip = PixelStrip(num=LEDS, pin=PIN, freq_hz=800000, dma=10, invert=False, brightness=255, channel=0)
         self.strip.begin()
-        self.dcolor = DCOLOR
-	self.color = colors[DCOLOR]
+        self.color = colors[DCOLOR]
 
     def state(self):
-	state = super().state()
-	state['state'] = identify_color(self.color)
+        state = super().state()
+        state['state'] = identify_color(self.color)
 
     def set_strip_to_color(self, color):
-	for i in range(strip.NumPixels()):
-	   strip.setPixelColor(i, color)
+        for i in range(strip.NumPixels()):
+            strip.setPixelColor(i, color)
 
     def request_state(requested_state):
         next_color = requested_state.get("state", self.dcolor)

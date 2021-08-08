@@ -3,6 +3,7 @@ from .gpio import latch, mag_sensor
 from .camera import camera
 from .wemo import wemo_plug, wemo_insight
 from .kasa import kasa_strip
+from .ws2812 import ws2812
 
 
 def get_subclasses(root):
