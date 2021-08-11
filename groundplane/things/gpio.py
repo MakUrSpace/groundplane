@@ -1,6 +1,7 @@
 """ Control code for anything connected to the GPIO bus """
 import gpiozero
 from groundplane.things import thing
+from threading import Timer
 
 
 class gpio(thing):
@@ -33,17 +34,24 @@ class out_pin(gpio):
 
 
 class latch(out_pin):
-    def __init__(self, SORT, DEVICE_TYPE, PIN):
+    def __init__(self, SORT, DEVICE_TYPE, PIN, RETRACTION_TIMEOUT=30):
         super().__init__(SORT=SORT, DEVICE_TYPE="latch", PIN=PIN)
+        self.unlock_timer = None
+        self.RETRACTION_TIMEOUT = RETRACTION_TIMEOUT
 
     @property
     def extended(self):
         return self.gpo.value == 0
 
     def retract(self):
+        # A timed callback is created to extend the lock to prevent overheating
+        self.unlock_timer = Timer(self.RETRACTION_TIMEOUT, self.extend)
+        self.unlock_timer.start()
         return super().request_state({"state": 1})
 
     def extend(self):
+        if self.unlock_timer is not None:
+            self.unlock_timer.cancel()
         return super().request_state({"state": 0})
 
     def state(self):

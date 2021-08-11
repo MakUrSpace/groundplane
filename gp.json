@@ -29,25 +29,25 @@
     },
     "THING|||||left_door_sensor": {
     	"GROUP": "THING",
-	"SORT": "left_door_latch",
+	"SORT": "left_door_sensor",
 	"DEVICE_TYPE": "mag_sensor",
 	"PIN": "GPIO22"
     },
     "THING|||||right_door_latch": {
     	"GROUP": "THING",
-	"SORT": "left_door_latch",
+	"SORT": "right_door_latch",
 	"DEVICE_TYPE": "latch",
 	"PIN": "GPIO27"
     },
     "THING|||||right_door_sensor": {
     	"GROUP": "THING",
-	"SORT": "left_door_latch",
+	"SORT": "right_door_sensor",
 	"DEVICE_TYPE": "mag_sensor",
 	"PIN": "GPIO23"
     },
     "THING|||||lights": {
     	"GROUP": "THING",
-	"SORT": "left_door_latch",
+	"SORT": "lights",
 	"DEVICE_TYPE": "ws2812",
 	"PIN": 18,
 	"DCOLOR": "white"

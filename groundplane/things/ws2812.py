@@ -37,12 +37,16 @@ class ws2812(thing):
         state = super().state()
         state['state'] = identify_color(self.color)
 
-    def set_strip_to_color(self, color):
-        for i in range(strip.NumPixels()):
-            strip.setPixelColor(i, color)
+    def set_strip_to_color(self, color=None):
+        color = self.DCOLOR if color is None else color
+        assert type(color) == str
+        color = colors[color.lower()]
+        for i in range(self.strip.numPixels()):
+            self.strip.setPixelColor(i, color)
+        self.strip.show()
 
     def request_state(requested_state):
-        next_color = requested_state.get("state", self.dcolor)
+        next_color = requested_state.get("state", self.DCOLOR)
         next_color = identify_color(next_color)
         self.color = next_color
         self.set_strip_to_color(self.color)
