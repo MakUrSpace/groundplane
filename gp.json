@@ -25,7 +25,7 @@
     	"GROUP": "THING",
 	"SORT": "left_door_latch",
 	"DEVICE_TYPE": "latch",
-	"PIN": "GPIO17"
+	"PIN": "GPIO23"
     },
     "THING|||||left_door_sensor": {
     	"GROUP": "THING",
@@ -43,7 +43,7 @@
     	"GROUP": "THING",
 	"SORT": "right_door_sensor",
 	"DEVICE_TYPE": "mag_sensor",
-	"PIN": "GPIO23"
+	"PIN": "GPIO17"
     },
     "THING|||||lights": {
     	"GROUP": "THING",
