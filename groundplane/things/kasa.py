@@ -22,7 +22,7 @@ class kasa_device(thing):
         self.KASA_CLASS = KASA_CLASS
         kasa_class = getattr(kasa, KASA_CLASS)
         self.kasa = kasa_class(DEVICE_ADDRESS)
-        self.update()
+        self.__update()
         self.child_map = {c.alias: c for c in self.kasa.children}
 
     @staticmethod
@@ -32,7 +32,7 @@ class kasa_device(thing):
                 return device
         raise Exception(f"Device {device_name} not found")
 
-    def update(self):
+    def __update(self):
         asyncio.run(self.kasa.update())
 
 
