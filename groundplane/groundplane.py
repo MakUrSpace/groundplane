@@ -40,15 +40,20 @@ class groundplane(Murd):
                 {"GROUP": "NAME", "SORT": "groundplane", "NAME": f"groundplane_{self.gpid}"},
                 {"GROUP": "IDENTIFIER", "GPID": self.gpid}])
 
-        for thing in self.things:
+        for thing in self.mthings:
             thing.pop('GROUP')
-            setattr(self, thing.thing_name,
-                    thing.thing_type(**thing))
+            setattr(self, thing.thing_name, thing.thing_type(**thing))
+
+    @property
+    def mthings(self):
+        for thing in self.read(group="THING"):
+            thing = self.M(**thing)
+            yield thing
 
     @property
     def things(self):
         for thing in self.read(group="THING"):
-            yield self.M(**thing)
+            yield getattr(self, thing['SORT'])
 
     def add_thing(self, thing):
         self.update([thing.get_definition()])

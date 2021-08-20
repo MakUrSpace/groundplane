@@ -1,9 +1,9 @@
-from .thing import thing
-from .gpio import latch, mag_sensor
-from .camera import camera
-from .wemo import wemo_plug, wemo_insight
-from .kasa import kasa_strip
-from .ws2812 import ws2812
+from groundplane.things.thing import thing
+from groundplane.things.gpio import latch, mag_sensor
+from groundplane.things.camera import camera
+from groundplane.things.wemo import wemo_plug, wemo_insight
+from groundplane.things.kasa import kasa_strip
+from groundplane.things.ws2812 import ws2812
 
 
 def get_subclasses(root):
