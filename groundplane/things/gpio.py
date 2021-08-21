@@ -44,14 +44,9 @@ class latch(out_pin):
         return self.gpo.value == 0
 
     def retract(self):
-        # A timed callback is created to extend the lock to prevent overheating
-        self.unlock_timer = Timer(self.RETRACTION_TIMEOUT, self.extend)
-        self.unlock_timer.start()
         return super().request_state({"state": 1})
 
     def extend(self):
-        if self.unlock_timer is not None:
-            self.unlock_timer.cancel()
         return super().request_state({"state": 0})
 
     def state(self):
@@ -60,7 +55,15 @@ class latch(out_pin):
         return state
 
     def request_state(self, requested_state):
-        state = requested_state.get("state", "extended")
+        state = requested_state.get("state", "extended").lower()
+        assert state in ["extended", "retracted"], f"Latch state {state} not recognized"
+        if state == "retracted":
+            # A timed callback is created to extend the lock to prevent overheating
+            self.unlock_timer = Timer(self.RETRACTION_TIMEOUT, self.extend)
+            self.unlock_timer.start()
+        elif self.unlock_timer is not None:
+            self.unlock_timer.cancel()
+
         return super().request_state({"state": 0 if state == "extended" else 1})
 
 
