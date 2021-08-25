@@ -44,10 +44,10 @@ class latch(out_pin):
         return self.gpo.value == 0
 
     def retract(self):
-        return super().request_state({"state": 1})
+        return self.request_state({"state": "retracted"})
 
     def extend(self):
-        return super().request_state({"state": 0})
+        return self.request_state({"state": "extended"})
 
     def state(self):
         state = super().state()
