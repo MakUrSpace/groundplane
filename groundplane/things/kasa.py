@@ -33,7 +33,10 @@ class kasa_device(thing):
         raise Exception(f"Device {device_name} not found")
 
     def __update(self):
-        asyncio.run(self.kasa.update())
+        try:
+            asyncio.get_running_loop().create_task(self.kasa.update())
+        except RuntimeError:
+            asyncio.run(self.kasa.update())
 
 
 class kasa_strip(kasa_device):
