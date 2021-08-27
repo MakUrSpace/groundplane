@@ -47,6 +47,7 @@ class ws2812(thing):
 
     def request_state(self, requested_state):
         next_color = requested_state.get("state", self.DCOLOR)
+        next_color =  colors.get(color, identify_color(next_color))
         next_color = identify_color(next_color)
         self.color = next_color
         self.set_strip_to_color(self.color)
