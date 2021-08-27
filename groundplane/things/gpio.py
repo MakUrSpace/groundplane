@@ -90,3 +90,6 @@ class mag_sensor(gpio):
     def field_present(self):
         return self.gpo.value == 1
 
+    def state(self):
+        return {"state": "field_present" if self.field_present else "no_field_present"}
+
