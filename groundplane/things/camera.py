@@ -47,10 +47,10 @@ class camera(thing):
 
 
 class dyn_camera(thing):
-    def __init__(self, SORT, DEVICE_TYPE, NUM_CAMERA):
+    def __init__(self, SORT, DEVICE_TYPE, NUM_CAMERA, SCAN_CAMERAS=10):
         super().__init__(SORT, DEVICE_TYPE)
         self.NUM_CAMERA = NUM_CAMERA
-        self.camera_numbers = identify_cameras()
+        self.camera_numbers = identify_cameras(list(range(SCAN_CAMERAS)))
         if len(self.camera_numbers) < NUM_CAMERA:
             raise Exception(f"Unable to locate {NUM_CAMERA} cameras")
 

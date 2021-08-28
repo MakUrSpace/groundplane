@@ -19,7 +19,8 @@
         "GROUP": "THING",
         "SORT": "cams",
         "DEVICE_TYPE": "dyn_camera",
-        "NUM_CAMERA": 2
+        "NUM_CAMERA": 2,
+	"SCAN_CAMERAS": 8
     },
     "THING|||||left_door_latch": {
     	"GROUP": "THING",

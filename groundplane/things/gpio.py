@@ -34,7 +34,7 @@ class out_pin(gpio):
 
 
 class latch(out_pin):
-    def __init__(self, SORT, DEVICE_TYPE, PIN, RETRACTION_TIMEOUT=30):
+    def __init__(self, SORT, DEVICE_TYPE, PIN, RETRACTION_TIMEOUT=15):
         super().__init__(SORT=SORT, DEVICE_TYPE="latch", PIN=PIN)
         self.unlock_timer = None
         self.RETRACTION_TIMEOUT = RETRACTION_TIMEOUT
@@ -57,14 +57,15 @@ class latch(out_pin):
     def request_state(self, requested_state):
         state = requested_state.get("state", "extended").lower()
         assert state in ["extended", "retracted"], f"Latch state {state} not recognized"
+        state = super().request_state({"state": 0 if state == "extended" else 1})
         if state == "retracted":
             # A timed callback is created to extend the lock to prevent overheating
             self.unlock_timer = Timer(self.RETRACTION_TIMEOUT, self.extend)
             self.unlock_timer.start()
         elif self.unlock_timer is not None:
             self.unlock_timer.cancel()
+        return state
 
-        return super().request_state({"state": 0 if state == "extended" else 1})
 
 
 class in_pin(gpio):
