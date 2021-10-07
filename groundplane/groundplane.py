@@ -21,7 +21,7 @@ class groundplane(Murd):
 
         @property
         def thing_type(self):
-            return thing_types[self['DEVICE_TYPE']]
+            return thing_types()[self['DEVICE_TYPE']]
 
         @property
         def attributes(self):

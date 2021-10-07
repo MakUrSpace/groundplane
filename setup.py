@@ -5,7 +5,7 @@ with open('README.md', 'r') as fh:
 
 setup(
     name='groundplane',
-    version='0.0.7',
+    version='0.0.8',
     author='MakUrSpace',
     author_email='hello@makurspace.com',
     description='MakerModule Automation',
