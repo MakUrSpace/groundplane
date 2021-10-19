@@ -25,6 +25,11 @@ try:
 except ImportError:
     print("WARNING: Unable to import ws2812 definition")
 
+try:
+    from groundplane.things.max31855 import max31855
+except ImportError:
+    print("WARNING: Unable to import max31855 definition")
+
 
 def thing_types(refresh=False):
     if refresh or thing_types.thing_types is None:
