@@ -1,6 +1,5 @@
 jod
 murd
-murdaws
 pywemo
 python-kasa
 gpiozero

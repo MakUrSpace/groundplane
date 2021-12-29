@@ -1,3 +1,5 @@
+#! /usr/bin/python
+
 from setuptools import setup, find_packages
 
 with open('README.md', 'r') as fh:
@@ -5,7 +7,7 @@ with open('README.md', 'r') as fh:
 
 setup(
     name='groundplane',
-    version='0.0.8',
+    version='0.0.10',
     author='MakUrSpace',
     author_email='hello@makurspace.com',
     description='MakerModule Automation',
@@ -14,6 +16,7 @@ setup(
     url='https://www.makurspace.com',
     packages=find_packages(),
     install_requires=["murd", "pywemo", "gpiozero"],
+    zip_safe=False,
     classifiers=(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

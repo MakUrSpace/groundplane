@@ -3,9 +3,10 @@ from inspect import signature
 
 
 class thing:
-    def __init__(self, SORT, DEVICE_TYPE):
+    def __init__(self, SORT, DEVICE_TYPE, REGION):
         self.SORT = SORT
         self.DEVICE_TYPE = DEVICE_TYPE
+        self.REGION = REGION
 
     @property
     def thing_name(self):

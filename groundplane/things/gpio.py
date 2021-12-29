@@ -5,8 +5,8 @@ from threading import Timer
 
 
 class gpio(thing):
-    def __init__(self, SORT, DEVICE_TYPE, PIN):
-        super().__init__(SORT, DEVICE_TYPE)
+    def __init__(self, SORT, DEVICE_TYPE, REGION, PIN):
+        super().__init__(SORT, DEVICE_TYPE, REGION)
         self.PIN = PIN
         self.gpo = None  # Child classes must override self.gpo in their own self.__init__
 
@@ -17,8 +17,8 @@ class gpio(thing):
 
 
 class out_pin(gpio):
-    def __init__(self, SORT, DEVICE_TYPE, PIN):
-        super().__init__(SORT, DEVICE_TYPE, PIN)
+    def __init__(self, SORT, DEVICE_TYPE, REGION, PIN):
+        super().__init__(SORT, DEVICE_TYPE, REGION, PIN)
         self.gpo = gpiozero.DigitalOutputDevice(
             pin=self.PIN,
             initial_value=False)

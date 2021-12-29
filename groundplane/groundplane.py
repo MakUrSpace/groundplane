@@ -4,7 +4,6 @@ from uuid import uuid4
 
 import murd
 from murd import Murd
-from murdaws import DDBMurd
 
 from groundplane.things import thing_types
 
@@ -30,7 +29,6 @@ class groundplane(Murd):
 
     def __init__(self, murd_file=None):
         super().__init__(murd_file)
-        self.ddbmurd = DDBMurd("hyperspace")
         if murd_file is not None:
             self.gpid = self.read_first(group="IDENTIFIER")["GPID"]
             self.name = self.read_first(group="NAME")["NAME"]
@@ -62,14 +60,13 @@ class groundplane(Murd):
     def state(self):
         state = {"START_TIMESTAMP": datetime.utcnow().isoformat()}
         for thing in self.things:
-            thing_name = thing.pop('SORT')
-            state[thing_name] = getattr(self, thing_name).state()
+            state[thing.thing_name] = thing.state()
         state["TIMESTAMP"] = datetime.utcnow().isoformat()
         return state
 
     def upload_state(self, state=None):
         state = self.state() if state is None else state
-        self.ddbmurd.update([{"GROUP": self.gpid, "SORT": state['TIMESTAMP'], **state}])
+        # self.ddbmurd.update([{"GROUP": self.gpid, "SORT": state['TIMESTAMP'], **state}])
 
     def request_state(self, requested_state):
         for thing in self.things:
@@ -94,7 +91,7 @@ class groundplane(Murd):
                 self.request_state(rs)
             if seconds % heartbeat_timeout == 0:
                 print("Heart beating")
-                self.upload_state()
+                # self.upload_state()
             if seconds > 600:
                 seconds = 0
 
