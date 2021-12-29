@@ -6,11 +6,6 @@ except ImportError:
     print("WARNING: Unable to import gpio definition")
 
 try:
-    from groundplane.things.camera import camera
-except ImportError:
-    print("WARNING: Unable to import camera definition")
-
-try:
     from groundplane.things.wemo import wemo_plug, wemo_insight
 except ImportError:
     print("WARNING: Unable to import wemo definitions")

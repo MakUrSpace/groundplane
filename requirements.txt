@@ -3,5 +3,4 @@ murd
 murdaws
 pywemo
 python-kasa
-opencv-python
 gpiozero

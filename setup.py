@@ -13,7 +13,7 @@ setup(
     long_description_content_type='text/markdown',
     url='https://www.makurspace.com',
     packages=find_packages(),
-    install_requires=["murd", "pywemo", "opencv-python", "gpiozero"],
+    install_requires=["murd", "pywemo", "gpiozero"],
     classifiers=(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
