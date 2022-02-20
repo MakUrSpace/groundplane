@@ -22,7 +22,7 @@ class kasa_device(thing):
         self.KASA_CLASS = KASA_CLASS
         kasa_class = getattr(kasa, KASA_CLASS)
         self.kasa = kasa_class(DEVICE_ADDRESS)
-        self.__update()
+        self.update()
         self.child_map = {c.alias: c for c in self.kasa.children}
 
     @staticmethod
@@ -32,7 +32,7 @@ class kasa_device(thing):
                 return device
         raise Exception(f"Device {device_name} not found")
 
-    def __update(self):
+    def update(self):
         try:
             asyncio.get_running_loop().create_task(self.kasa.update())
         except RuntimeError:
@@ -44,8 +44,16 @@ class kasa_strip(kasa_device):
         super().__init__(SORT, DEVICE_TYPE, DEVICE_ADDRESS, KASA_CLASS="SmartStrip")
 
     def state(self):
-        return {"state": {c.alias: c.is_on for c in self.kasa.children},
-                "TIMESTAMP": datetime.utcnow().isoformat()}
+        retries = 2
+        while retries > 0:
+            try:
+                self.update()
+                return {"state": {c.alias: c.is_on for c in self.kasa.children},
+                        "TIMESTAMP": datetime.utcnow().isoformat()}
+            except RuntimeError:
+                retries -= 1
+                if retries == 0:
+                    raise
 
     def request_state(self, requested_state):
         state_requests = []
@@ -56,5 +64,10 @@ class kasa_strip(kasa_device):
 
         async def request_children():
             await asyncio.gather(*state_requests)
-        asyncio.run(request_children())
+        try:
+            asyncio.run(request_children())
+        except Exception:
+            cState = self.state()
+            for key, value in requested_state.items():
+                assert value == cState['state'][key], f"Failed to set kasa_strip.{key} to {value}"
         return True

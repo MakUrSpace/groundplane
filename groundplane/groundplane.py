@@ -62,7 +62,7 @@ class groundplane(Murd):
     def state(self):
         state = {"START_TIMESTAMP": datetime.utcnow().isoformat()}
         for thing in self.things:
-            thing_name = thing.pop('SORT')
+            thing_name = thing.thing_name
             state[thing_name] = getattr(self, thing_name).state()
         state["TIMESTAMP"] = datetime.utcnow().isoformat()
         return state
