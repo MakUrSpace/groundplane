@@ -2,33 +2,33 @@ from groundplane.things.thing import thing
 
 try:
     from groundplane.things.gpio import latch, mag_sensor
-except ImportError:
-    print("WARNING: Unable to import gpio definition")
+except ImportError as e:
+    print(f"WARNING: Unable to import gpio definition: {e}")
 
 try:
     from groundplane.things.camera import camera
-except ImportError:
-    print("WARNING: Unable to import camera definition")
+except ImportError as e:
+    print(f"WARNING: Unable to import camera definition: {e}")
 
 try:
     from groundplane.things.wemo import wemo_plug, wemo_insight
-except ImportError:
-    print("WARNING: Unable to import wemo definitions")
+except ImportError as e:
+    print(f"WARNING: Unable to import wemo definitions: {e}")
 
 try:
     from groundplane.things.kasa import kasa_strip
-except ImportError:
-    print("WARNING: Unable to import kasa definition")
+except ImportError as e:
+    print(f"WARNING: Unable to import kasa definition: {e}")
 
 try:
     from groundplane.things.ws2812 import ws2812
-except ImportError:
-    print("WARNING: Unable to import ws2812 definition")
+except ImportError as e:
+    print(f"WARNING: Unable to import ws2812 definition: {e}")
 
 try:
     from groundplane.things.max31855 import max31855
-except ImportError:
-    print("WARNING: Unable to import max31855 definition")
+except ImportError as e:
+    print(f"WARNING: Unable to import max31855 definition: {e}")
 
 
 def thing_types(refresh=False):

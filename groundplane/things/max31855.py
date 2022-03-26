@@ -30,15 +30,15 @@ class max31855(thing):
         temp = (((a << 8) | b) >> 2)*0.25
         return temp
 
-  def readFahrenheit(self):
+    def readFahrenheit(self):
         return self.readCelsius() * 1.8 + 32
 
-  def getTemperature(self, n=100):
-      n = min(max(n, 5), 100)
-      sample = sorted([self.readFahrenheit() for i in range(n)])
-      return sample[int(n / 2)]
+    def getTemperature(self, n=100):
+        n = min(max(n, 5), 100)
+        sample = sorted([self.readFahrenheit() for i in range(n)])
+        return sample[int(n / 2)]
 
-  def state(self):
-      state = super().state()
-      state['state'] = self.getTemperature()
+    def state(self):
+        state = super().state()
+        state['state'] = self.getTemperature()
 
