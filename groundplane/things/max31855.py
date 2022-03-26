@@ -41,4 +41,5 @@ class max31855(thing):
     def state(self):
         state = super().state()
         state['state'] = self.getTemperature()
-
+        return state
+  
